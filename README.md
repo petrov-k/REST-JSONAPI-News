@@ -1,28 +1,36 @@
-<<<<<<< HEAD
-# REST-JSONAPI-News
-=======
-# README
+# REST-JSONAPI-News(Gotoinc application)
+## Overview
+This pull request introduces a comprehensive CRUD Rails application that integrates various technologies and libraries to enhance its functionality and testing capabilities. Below is a detailed description of the components and features included in this application.EADME
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+Ruby version `3.2.2`
 
-Things you may want to cover:
+Features
+- OAuth2 Authentication
+- GraphQL API
+- REST API
+- JSON API
+- PostgreSQL db
 
-* Ruby version
+Testing 
+* RSpec
+* Cucumber
+* Capybara
 
-* System dependencies
+## Getting Started
+To set up and run the application locally, follow these steps:
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
->>>>>>> 3de3dc5 (Initial commit)
+1. Clone the repository:
+```
+git clone https://github.com/petrov-k/REST-JSONAPI-News.git
+cd REST-JSONAPI-News
+```
+2. Install dependencies
+```
+bundle install
+```
+3. Setup database
+```
+rails db:create
+rails db:migrate
+rails db:seed
+```
