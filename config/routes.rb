@@ -17,6 +17,10 @@ Rails.application.routes.draw do
     namespace :v1 do
       jsonapi_resources :articles do
         jsonapi_resources :comments
+
+        member do
+          get :summarize
+        end
       end
       jsonapi_resources :users
       jsonapi_resources :categories

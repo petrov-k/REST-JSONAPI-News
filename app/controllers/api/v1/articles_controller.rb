@@ -3,45 +3,31 @@
 module Api
   module V1
     class ArticlesController < Api::V1::BaseController
-      # def index
-      #   articles = Article.all
-      #   render json: articles
-      # end
+      require 'pycall/import'
+      include PyCall::Import
 
-      # def show
-      #   article = Article.find(params[:id])
-      #   render json: article
-      # end
+      def summarize
+        article = Article.find(params[:id])
+        text = article.content
+        sentences_count = params[:sentences_count] || 3
 
-      # def create
-      #   article = Article.new(article_params)
-      #   if article.save
-      #     render json: article, status: :created
-      #   else
-      #     render json: article.errors, status: :unprocessable_entity
-      #   end
-      # end
+        summary = summarize_text_with_python(text, sentences_count)
+        render json: { summary: summary }
 
-      # def update
-      #   article = Article.find(params[:id])
-      #   if article.update(article_params)
-      #     render json: article, status: :ok
-      #   else
-      #     render json: article.errors, status: :unprocessable_entity
-      #   end
-      # end
+        private
 
-      # def destroy
-      #   article = Article.find(params[:id])
-      #   article.destroy
-      #   head 204
-      # end
+        def summarize_text_with_python(text, sentences_count)
+          pyimport '__main__', as: 'summarizer'
+          summarizer_path = Rails.root.join('lib', 'tasks', 'summarize.py').to_s
 
-      # private
-
-      # def article_params
-      #   params.require(:article).permit(:title, :content, :user_id)
-      # end
+          # Calling the Python script using PyCall
+          PyCall.exec "exec(open('#{summarizer_path}').read())"
+          summarizer.summarize_text(text, sentences_count)
+        rescue StandardError => e
+          logger.error "Python summarization error: #{e.message}"
+          "Error summarizing text"
+        end
+      end
     end
   end
 end
